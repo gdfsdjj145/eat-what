@@ -1,9 +1,16 @@
 {
 	"pages": [
 		{
-			"path": "pages/menu/index",
+			"path": "pages/index/done",
 			"style": {
 				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/index/step",
+			"style": {
+				"navigationBarTitleText": "步骤",
+				"navigationBarBackgroundColor": "#fafcff"
 			}
 		},
 		{
@@ -15,7 +22,13 @@
 		{
 			"path": "pages/user/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/menu/index",
+			"style": {
+				"navigationStyle": "custom"
 			}
 		}
 	],
