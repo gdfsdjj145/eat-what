@@ -6,13 +6,22 @@
         恭喜你，完成这道菜
       </div>
     </div>
-    <div class="next-btn">
+    <div
+      class="next-btn"
+      @click="handleGoBack"
+    >
       返回首页
     </div>
   </div>
 </template>
 <script setup>
 import { ref } from 'vue'
+
+const handleGoBack = () => {
+  uni.switchTab({
+    url: '/pages/index/index'
+  })
+}
 </script>
 
 

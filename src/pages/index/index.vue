@@ -77,7 +77,7 @@
 import { ref } from 'vue'
 import { useUserStore } from '@/pinia/modules/user.js'
 const { userInfo, ageAdd } = useUserStore()
-const activeFood = ref(true)
+const activeFood = ref(false)
 
 const food = ref({
   type: '低脂',
