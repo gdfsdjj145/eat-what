@@ -30,15 +30,6 @@
               <image src="../../static//bg.png"></image>
             </div>
           </scroll-view>
-          <!-- <ul class="type-list">
-            <li
-              v-for="(type, i) in item.children"
-              :key="i"
-              class="type-item"
-            >
-              <image src="../../static//bg.png"></image>
-            </li>
-          </ul> -->
         </li>
       </ul>
     </div>
