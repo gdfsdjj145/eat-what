@@ -1,93 +1,94 @@
 <template>
   <div class="menu-container">
     <div class="header">
-      <div class="searh-container"></div>
+      <div class="searh-container">
+        <input
+          v-model="keyWord"
+          class="uni-input"
+          confirm-type="search"
+          placeholder="请输入搜索关键词"
+          @keydown.native.enter="onSearch"
+        />
+      </div>
     </div>
     <div class="main">
-      <ul>
-        <li
-          v-for="(item, index) in typeList"
-          :key="index"
-          class="type-container"
-        >
-          <div class="type-title">
-            <div>
-              {{item.title}}
-            </div>
-            <div>
-              >
-            </div>
-          </div>
-          <scroll-view
-            scroll-x="true"
-            class="type-list"
-          >
-            <div
-              v-for="(type, i) in item.children"
-              :key="i"
-              class="type-item"
-            >
-              <image src="../../static//bg.png"></image>
-            </div>
-          </scroll-view>
-        </li>
-      </ul>
+      <div
+        v-for="(item, index) in typeList"
+        :key="index"
+        class="item"
+      >
+        <image
+          mode="aspectFill"
+          :src="item.img"
+        ></image>
+        <div class="text">
+          {{item.title}}
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { getMenu } from '@/api/menu'
 
-const typeList = ref([
-  {
-    title: '土豆类',
-    children: [
-      {
-        label: '做最好吃的土豆'
-      },
-      {
-        label: '做最好吃的土豆'
-      },
-      {
-        label: '做最好吃的土豆'
-      },
-      {
-        label: '做最好吃的土豆'
-      }
-    ]
-  },
-  {
-    title: '素食',
-    children: [
-      {
-        label: '做最好吃的素食'
-      }
-    ]
-  },
-  {
-    title: '顿顿肉',
-    children: [
-      {
-        label: '做最好吃的素食'
-      }
-    ]
-  },
-  {
-    title: '油条',
-    children: [
-      {
-        label: '做最好吃的素食'
-      }
-    ]
-  }
-])
+const typeList = ref([])
+const keyWord = ref('')
+
+const onSearch = async () => {
+  const { data } = await getMenu({
+    page: 1,
+    pageSize: 10,
+    key: keyWord.value
+  })
+  typeList.value = data.list
+}
+
+onMounted(async () => {
+  await onSearch()
+})
 </script>
 
 
 <style lang="scss" scoped>
 .menu-container {
-  padding-right: 24px;
   padding-top: 100px;
+  .searh-container {
+    margin: 0 24px;
+    margin-bottom: 24px;
+    padding: 14px;
+    height: 48px;
+    background-color: #f6f7f8;
+    border-radius: 20px;
+    box-sizing: border-box;
+    input {
+      height: 100%;
+    }
+  }
+  .main {
+    padding: 0 24px;
+    column-count: 2; //想要排成的列数
+    column-gap: 17px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    .item {
+      position: relative;
+      margin-bottom: 10px;
+      .text {
+        position: absolute;
+        width: 80px;
+        left: 17px;
+        bottom: 24px;
+        font-size: 18px;
+        font-weight: 500;
+        color: #fff;
+      }
+      image {
+        width: 100%;
+        border-radius: 20px;
+      }
+    }
+  }
   .type-container {
     margin-bottom: 25px;
     .type-title {

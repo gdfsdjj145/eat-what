@@ -13,5 +13,6 @@ export default {
 </script>
 
 <style>
+/* @import "@/animate.css/animate.min.css"; */
 /*每个页面公共css */
 </style>

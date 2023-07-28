@@ -3,13 +3,13 @@ import mpAdapter from 'axios-miniprogram-adapter'
 import { useUserStore } from '@/pinia/modules/user'
 axios.defaults.adapter = mpAdapter
 
-const service = axios.create({
+const request = axios.create({
   baseURL: import.meta.env.VITE_BASE_API,
   timeout: 99999
 })
 
 // 请求拦截器
-service.interceptors.request.use(config => {
+request.interceptors.request.use(config => {
   // 拿token
   const { userInfo } = useUserStore()
   config.headers = {
@@ -25,7 +25,7 @@ service.interceptors.request.use(config => {
 })
 
 // 响应拦截器
-service.interceptors.response.use(response => {
+request.interceptors.response.use(response => {
   // dosomething ...
   return response.data
 }, error => {
@@ -33,4 +33,4 @@ service.interceptors.response.use(response => {
   return error
 })
 
-export default service
+export default request

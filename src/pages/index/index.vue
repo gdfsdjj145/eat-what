@@ -17,22 +17,26 @@
         点一下，来一个菜
       </p>
     </view>
-    <view :class="['cook-container', activeFood ? 'fade-out' : '']">
+    <view
+      :class="['cook-container', activeFood ? 'fade-out' : '', randomFlag ? 'animate__animated animate__shakeX animate__repeat-2' : '']"
+      @click="handleGetOne"
+    >
       <image src='../../static/cook.png'></image>
     </view>
-    <view :class="[activeFood ? 'fade-out' : '', 'eat-wrapper']">
+    <view :class="[activeFood ? 'fade-out' : '', 'eat-wrapper', randomFlag ? 'animate__animated animate__shakeX animate__repeat-2' : '']">
       <view
-        :class="['type-container', activeFood ? 'fade-out' : '']"
+        :class="['type-container', activeFood ? 'fade-out' : '' ]"
         @click="handleShow"
       >
         <view class="type-wrapper">
-          {{food.type}}
+          <!-- {{food.type}} -->
+          美食
         </view>
         <view class="food-name">
-          {{food.name}}
+          {{titleName(food.title)}}
         </view>
         <view class="by">
-          {{food.by}}
+          网络数据
         </view>
       </view>
     </view>
@@ -41,7 +45,10 @@
       <view class="material-title">
         {{food.name}}
       </view>
-      <view class="next-btn">
+      <view
+        class="next-btn"
+        @click="handleToCook"
+      >
         去烹饪
       </view>
       <view class="material-main">
@@ -56,11 +63,11 @@
           <ul>
             <li
               class="material-item"
-              v-for="(item , i) in material.children"
+              v-for="(item , i) in material.detail"
               :key="i"
             >
               <view class="name">
-                {{item.name}}
+                {{item.title}}
               </view>
               <view class="count">
                 {{item.count}}
@@ -74,48 +81,29 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { onShow } from "@dcloudio/uni-app"
+import { getOne } from '@/api/menu'
 import { useUserStore } from '@/pinia/modules/user.js'
 const { userInfo, ageAdd } = useUserStore()
 const activeFood = ref(false)
 
-const food = ref({
-  type: '低脂',
-  name: '茄汁鸡扒',
-  by: '由官方提供',
-  material: [
-    {
-      type: '主料',
-      children: [
-        {
-          name: '鸡腿扒',
-          count: '1个'
-        }
-      ]
-    },
-    {
-      type: '配料',
-      children: [
-        {
-          name: '亨氏番茄酱',
-          count: '2匙'
-        },
-        {
-          name: '酱油',
-          count: '1匙'
-        },
-        {
-          name: '盐',
-          count: '1匙'
-        },
-        {
-          name: '牛油',
-          count: '1块'
-        },
-      ]
-    }
-  ]
-})
+const food = ref({})
+const randomFlag = ref(false)
+
+const handleGetOne = async () => {
+  randomFlag.value = true
+  const { data } = await getOne()
+  setTimeout(() => {
+    food.value = data
+    randomFlag.value = false
+  }, 2000)
+}
+
+const _getOne = async () => {
+  const { data } = await getOne()
+  food.value = data
+}
 
 const handleShow = () => {
   activeFood.value = true
@@ -124,6 +112,26 @@ const handleShow = () => {
 const handleRestore = () => {
   activeFood.value = false
 }
+
+const handleToCook = () => {
+  uni.navigateTo({
+    url: `/pages/index/setp?id=${food.value._id}`
+  })
+}
+
+const titleName = (name = '') => {
+  if (name.length > 8) {
+    return name.slice(0, 8) + '...'
+  }
+  return name
+}
+
+onShow(async () => {
+  activeFood.value = false
+  await _getOne()
+
+})
+
 
 </script>
 
