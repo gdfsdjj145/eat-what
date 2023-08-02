@@ -1,7 +1,10 @@
 <template>
   <div class="done-container">
     <div class="done-wrapper">
-      <image src="../../static/done.png"></image>
+      <image
+        class="animate__animated animate__bounce animate__repeat-3"
+        src="../../static/done.png"
+      ></image>
       <div class="text">
         恭喜你，完成这道菜
       </div>

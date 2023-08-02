@@ -16,6 +16,7 @@
         v-for="(item, index) in typeList"
         :key="index"
         class="item"
+        @click="handleToDetail(item)"
       >
         <image
           mode="aspectFill"
@@ -30,6 +31,7 @@
 </template>
 <script setup>
 import { onMounted, ref } from 'vue'
+import { setStorage } from '@/utils/utils'
 import { getMenu } from '@/api/menu'
 
 const typeList = ref([])
@@ -42,6 +44,14 @@ const onSearch = async () => {
     key: keyWord.value
   })
   typeList.value = data.list
+}
+
+const handleToDetail = (item) => {
+  setStorage('menuData', JSON.stringify(item))
+  uni.navigateTo({
+    url: '/pages/menu/detail'
+  })
+  console.log(item)
 }
 
 onMounted(async () => {

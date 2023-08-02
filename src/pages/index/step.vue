@@ -12,39 +12,38 @@
         <div class="content">
           {{step.content}}
         </div>
+        <!-- <div class="img">
+          <image :src='step.img'></image>
+        </div> -->
       </li>
     </ul>
-    <div class="next-btn">
+    <div
+      class="next-btn"
+      @click="handleToDone"
+    >
       完成
     </div>
   </div>
 </template>
 <script setup>
 import { ref } from 'vue'
+import { onShow } from "@dcloudio/uni-app"
+import { getStep } from '@/api/menu'
+import { getCurrentRoute } from '@/utils/utils'
 
-const setpList = ref([
-  {
-    content: '准备食材'
-  },
-  {
-    content: '鸡腿纵向剪开'
-  },
-  {
-    content: '倒入酱油腌制'
-  },
-  {
-    content: '下牛油先煎带皮那面，逼出鸡油'
-  },
-  {
-    content: '倒入料酒和一碗清水，大火烧开后转小火，盖上盖子慢焖'
-  },
-  {
-    content: '两勺亨氏番茄酱'
-  },
-  {
-    content: '收汁后关火，淋上鸡扒即可'
-  }
-])
+const setpList = ref([])
+
+const handleToDone = () => {
+  uni.navigateTo({
+    url: '/pages/index/done'
+  })
+}
+
+onShow(async () => {
+  const { params } = getCurrentRoute()
+  const { data } = await getStep(params.id)
+  setpList.value = data
+})
 </script>
 
 
@@ -69,6 +68,14 @@ const setpList = ref([
     }
     .content {
       font-size: 16px;
+    }
+    .img {
+      width: 200px;
+      height: 100%;
+      image {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
   .next-btn {

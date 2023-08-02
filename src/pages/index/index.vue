@@ -114,8 +114,9 @@ const handleRestore = () => {
 }
 
 const handleToCook = () => {
+  activeFood.value = false
   uni.navigateTo({
-    url: `/pages/index/setp?id=${food.value._id}`
+    url: `/pages/index/step?id=${food.value.id}`
   })
 }
 

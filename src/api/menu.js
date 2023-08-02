@@ -11,3 +11,9 @@ export function getOne () {
     url: '/getOne'
   })
 }
+
+export function getStep (id) {
+  return request({
+    url: `/getStep?id=${id}`
+  })
+}
