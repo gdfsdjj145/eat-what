@@ -7,6 +7,13 @@
       }
     },
     {
+      "path": "pages/user/detail",
+      "style": {
+        "navigationBarTitleText": "详情",
+        "navigationBarBackgroundColor": "#fafcff"
+      }
+    },
+    {
       "path": "pages/menu/detail",
       "style": {
         "navigationBarTitleText": "详情",

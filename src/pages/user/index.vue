@@ -6,25 +6,28 @@
     <div class="user-wrapper">
       <div class="user-info">
         <div class="user-image">
-          <image src="../../static//bg.png"></image>
+          <image :src="userInfo.avatarUrl"></image>
         </div>
         <div class="info-wrapper">
           <div class="name">
-            用户：强暴鸡米花
+            用户：{{userInfo.name}}
           </div>
         </div>
       </div>
     </div>
     <div class="refrigerator-contianer">
       <div class="refrigerator-wrapper">
-        <div class="add-btn">
+        <div
+          class="add-btn"
+          @click="handleToAddFood"
+        >
           <image src="../../static/add.png"></image>
         </div>
         <div class="refrigerator-padding">
           <div class="refrigerator-content">
             <ul>
               <li
-                v-for="(item ,index) in foodList"
+                v-for="(item ,index) in userInfo.foodStore"
                 :key="index"
                 class="refrigerator-item"
               ></li>
@@ -40,12 +43,20 @@
 </template>
 <script setup>
 import { ref } from 'vue'
+import { onShow } from '@dcloudio/uni-app'
+import { useUserStore } from '@/pinia/modules/user.js'
 
-const foodList = ref([
-  {
-    child: []
-  }
-])
+const { userInfo, login } = useUserStore()
+
+const handleToAddFood = () => {
+  uni.navigateTo({
+    url: '/pages/user/detail'
+  })
+}
+
+onShow(() => {
+  login()
+})
 </script>
 
 
