@@ -7,6 +7,13 @@ export function getFoodList () {
   })
 }
 
+export function getUserFood (id) {
+  return request({
+    url: `/getUserFood?id=${id}`,
+    method: 'get'
+  })
+}
+
 export function updateUserFood (data) {
   return request({
     url: '/setUserFood',

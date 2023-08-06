@@ -155,7 +155,7 @@ onShow(async () => {
   }
   .title {
     position: absolute;
-    top: 300px;
+    top: 300rpx;
     width: 100%;
     text-align: center;
     font-size: 30px;
@@ -167,7 +167,7 @@ onShow(async () => {
     position: absolute;
     left: 50%;
     margin-left: -60px;
-    top: 400px;
+    top: 500rpx;
     width: 120px;
     height: 120px;
     border-radius: 20px;

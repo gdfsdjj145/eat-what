@@ -6,14 +6,7 @@ import { ref } from 'vue'
 import { Login } from '@/api/common'
 
 export const useUserStore = defineStore('user', () => {
-  const userInfo = ref({
-    name: 'shuaige',
-    age: 18,
-    token: ''
-  })
-  const ageAdd = () => {
-    userInfo.value.age++
-  }
+  const userInfo = ref({})
 
   const login = () => {
     uni.login({
@@ -40,7 +33,6 @@ export const useUserStore = defineStore('user', () => {
   }
   return {
     userInfo,
-    ageAdd,
     login
   }
 })

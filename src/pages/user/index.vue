@@ -42,8 +42,9 @@
   </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
+import { getUserFood } from '@/api/food'
 import { useUserStore } from '@/pinia/modules/user.js'
 
 const { userInfo, login } = useUserStore()
@@ -54,8 +55,14 @@ const handleToAddFood = () => {
   })
 }
 
-onShow(() => {
-  login()
+onShow(async () => {
+  await login()
+})
+
+onMounted(async () => {
+  console.log(456)
+  const { data } = await getUserFood(userInfo.openId)
+  console.log(data)
 })
 </script>
 

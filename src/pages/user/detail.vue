@@ -37,7 +37,7 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
-import { getFoodList } from '@/api/food'
+import { getFoodList, updateUserFood } from '@/api/food'
 import { useUserStore } from '@/pinia/modules/user.js'
 
 const { userInfo } = useUserStore()
@@ -57,19 +57,26 @@ const handleReduce = (item) => {
   userStore.value[item.name]--
 }
 
-const hanldeConfirm = () => {
-  const obj = Object.keys(userStore.value).map(key => ({
+const hanldeConfirm = async () => {
+  const arr = Object.keys(userStore.value).map(key => ({
     key,
     count: userStore.value[key]
   }))
-  console.log(obj)
+  await updateUserFood({
+    id: userInfo.openId,
+    foods: arr
+  })
+  uni.switchTab({
+    url: '/pages/user/index'
+  })
 }
 
 onMounted(async () => {
+  console.log(userInfo.foodStore)
   const { data } = await getFoodList()
   foodList.value = data
-  userInfo.value.foodStore.forEach(item => {
-    userStore.value[item.name] = item.count
+  userInfo.foodStore.forEach(item => {
+    userStore.value[item.key] = item.count
   })
 })
 </script>
