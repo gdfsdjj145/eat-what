@@ -56,7 +56,7 @@ onShow(async () => {
   .step-item {
     display: flex;
     padding: 20px;
-    height: 128px;
+    min-height: 128px;
     border-radius: 10px;
     background-color: #fff;
     margin-bottom: 24px;

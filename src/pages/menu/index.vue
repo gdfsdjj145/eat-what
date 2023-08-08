@@ -7,7 +7,7 @@
           class="uni-input"
           confirm-type="search"
           placeholder="请输入搜索关键词"
-          @keydown.native.enter="onSearch"
+          @confirm="onSearch"
         />
       </div>
     </div>
@@ -30,7 +30,7 @@
   </div>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { setStorage } from '@/utils/utils'
 import { getMenu } from '@/api/menu'
 
@@ -51,8 +51,13 @@ const handleToDetail = (item) => {
   uni.navigateTo({
     url: '/pages/menu/detail'
   })
-  console.log(item)
 }
+
+watch(keyWord, nv => {
+  if (!nv.length) {
+    onSearch()
+  }
+})
 
 onMounted(async () => {
   await onSearch()

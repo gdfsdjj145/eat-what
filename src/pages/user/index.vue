@@ -6,11 +6,11 @@
     <div class="user-wrapper">
       <div class="user-info">
         <div class="user-image">
-          <image :src="userInfo.avatarUrl"></image>
+          <image :src="userStore.userInfo.avatarUrl"></image>
         </div>
         <div class="info-wrapper">
           <div class="name">
-            用户：{{userInfo.name}}
+            用户：{{userStore.userInfo.name}}
           </div>
         </div>
       </div>
@@ -25,12 +25,14 @@
         </div>
         <div class="refrigerator-padding">
           <div class="refrigerator-content">
-            <ul>
+            <ul class="refrigerator-wrpper">
               <li
-                v-for="(item ,index) in userInfo.foodStore"
+                v-for="(item ,index) in userStore.userInfo.foodStore"
                 :key="index"
                 class="refrigerator-item"
-              ></li>
+              >
+                <image :src="item.url"></image>
+              </li>
             </ul>
           </div>
         </div>
@@ -44,10 +46,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
-import { getUserFood } from '@/api/food'
+import { getUserFood, getFoodList } from '@/api/food'
 import { useUserStore } from '@/pinia/modules/user.js'
 
-const { userInfo, login } = useUserStore()
+const userStore = useUserStore()
 
 const handleToAddFood = () => {
   uni.navigateTo({
@@ -55,15 +57,24 @@ const handleToAddFood = () => {
   })
 }
 
+const initFoodList = async () => {
+  const { data } = await getFoodList()
+  userStore.setFoodList(data)
+}
+
 onShow(async () => {
-  await login()
+  await userStore.login()
+  await initFoodList()
+  const { data } = await getUserFood(userStore.userInfo.openId)
+  const foodList = userStore.getHashFoodList()
+  console.log(data)
+  userStore.userInfo.foodStore = data.foodStore.filter(item => item.count).map(item => ({
+    ...item,
+    url: foodList[item.key]
+  }))
+  console.log(userStore.userInfo.foodStore)
 })
 
-onMounted(async () => {
-  console.log(456)
-  const { data } = await getUserFood(userInfo.openId)
-  console.log(data)
-})
 </script>
 
 
@@ -136,6 +147,7 @@ onMounted(async () => {
         margin-left: -25px;
         background-color: #fff;
         border-radius: 50%;
+        z-index: 2;
         image {
           width: 100%;
           height: 100%;
@@ -155,10 +167,31 @@ onMounted(async () => {
         height: 100%;
         background-color: #8ebae6;
       }
+      .refrigerator-wrpper {
+        display: flex;
+        flex-wrap: wrap;
+        padding-top: 30px;
+        height: 100%;
+        overflow: hidden;
+        overflow-y: auto;
+        box-sizing: border-box;
+      }
       .refrigerator-item {
-        width: 100%;
-        height: 100px;
-        border-bottom: 10px solid #fff;
+        flex-basis: 180rpx;
+        height: 180rpx;
+        margin: 7px;
+        display: inline-block;
+        padding: 15px 10px;
+        border-radius: 50%;
+        box-sizing: border-box;
+        background-color: white;
+        image {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          transform: scale(0.7);
+        }
+        // border-bottom: 10px solid #fff;
       }
       .bottom-1 {
         position: absolute;

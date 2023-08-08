@@ -40,9 +40,7 @@ import { ref, onMounted } from 'vue'
 import { getFoodList, updateUserFood } from '@/api/food'
 import { useUserStore } from '@/pinia/modules/user.js'
 
-const { userInfo } = useUserStore()
-
-const foodList = ref([])
+const { userInfo, foodList, setFoodList, setUserFood } = useUserStore()
 const userStore = ref({})
 
 const handleAdd = (item) => {
@@ -66,15 +64,13 @@ const hanldeConfirm = async () => {
     id: userInfo.openId,
     foods: arr
   })
+  setUserFood(arr)
   uni.switchTab({
     url: '/pages/user/index'
   })
 }
 
 onMounted(async () => {
-  console.log(userInfo.foodStore)
-  const { data } = await getFoodList()
-  foodList.value = data
   userInfo.foodStore.forEach(item => {
     userStore.value[item.key] = item.count
   })

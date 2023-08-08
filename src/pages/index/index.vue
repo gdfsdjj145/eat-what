@@ -92,6 +92,7 @@ const food = ref({})
 const randomFlag = ref(false)
 
 const handleGetOne = async () => {
+  if (randomFlag.value) return
   randomFlag.value = true
   const { data } = await getOne()
   setTimeout(() => {
@@ -173,6 +174,7 @@ onShow(async () => {
     border-radius: 20px;
     background-color: rgba(255, 255, 255, 1);
     transition: all 0.3s;
+    z-index: 3;
     image {
       width: 100%;
       height: 100%;
@@ -189,6 +191,9 @@ onShow(async () => {
     width: 100%;
     height: 70%;
     transition: all 0.5s;
+    z-index: 2;
+    overflow: hidden;
+    overflow-y: auto;
     .material-title {
       text-align: center;
       font-size: 30px;
@@ -198,7 +203,6 @@ onShow(async () => {
     .material-main {
       flex: 1;
       padding: 0 10px;
-      overflow-y: auto;
     }
     .next-btn {
       margin: 0 auto;
